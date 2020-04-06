@@ -6,9 +6,6 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
 from keras.layers import Embedding, Flatten, Dense
 
-from contextlib import contextmanager
-from tempfile import NamedTemporaryFile
-
 # You need to download the files and replace the path with your path
 imdb_dir = '/home/nic/Downloads/aclImdb' # http://mng.bz/0tIo
 glove_dir = '/home/nic/Downloads/glove.6B' # https://www.kaggle.com/anindya2906/glove6b
