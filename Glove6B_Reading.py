@@ -9,7 +9,10 @@ from keras.layers import Embedding, Flatten, Dense
 from contextlib import contextmanager
 from tempfile import NamedTemporaryFile
 
+# You need to download the files and replace the path with your path
 imdb_dir = '/home/nic/Downloads/aclImdb' # http://mng.bz/0tIo
+glove_dir = '/home/nic/Downloads/glove.6B' # https://www.kaggle.com/anindya2906/glove6b
+
 train_dir = os.path.join(imdb_dir, 'train')
 labels = []
 texts = []
@@ -57,7 +60,6 @@ y_val = labels[training_samples: training_samples + validation_samples]
 PARSING THE GLOVE WORD-EMBEDDING FILES
 """
 
-glove_dir = '/home/nic/Downloads/glove.6B' # https://www.kaggle.com/anindya2906/glove6b
 embeddings_index = {}
 
 with open(os.path.join(glove_dir, 'glove.6B.300d.txt'), 'r') as f:
