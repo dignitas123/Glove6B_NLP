@@ -6,7 +6,8 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
 from keras.layers import Embedding, Flatten, Dense
 
-# You need to download the files and replace the path with your path
+from tqdm import tqdm
+
 imdb_dir = '/home/nic/Downloads/aclImdb' # http://mng.bz/0tIo
 glove_dir = '/home/nic/Downloads/glove.6B' # https://www.kaggle.com/anindya2906/glove6b
 
@@ -60,12 +61,12 @@ PARSING THE GLOVE WORD-EMBEDDING FILES
 embeddings_index = {}
 
 with open(os.path.join(glove_dir, 'glove.6B.300d.txt'), 'r') as f:
-    for line in f:
+    for line in tqdm(f):
         values = line.split()
         word = values[0]
         coefs = np.asarray(values[1:], dtype='float32')
         embeddings_index[word] = coefs
-        print('Found %s word vectors.' % len(embeddings_index))
+        # print('Found %s word vectors.' % len(embeddings_index))
     
 """
 PREPARING THE GLOVE WORD-EMBEDDING FILES
@@ -83,11 +84,15 @@ for word, i in word_index.items():
 MODEL DEFINITION
 """
 
+from keras.layers import LSTM
+
 model = Sequential()
 model.add(Embedding(max_words, embedding_dim, input_length=maxlen))
-model.add(Flatten())
-model.add(Dense(32, activation='relu'))
+model.add(LSTM(32))
 model.add(Dense(1, activation='sigmoid'))
+# model.add(Flatten())
+# model.add(Dense(32, activation='relu'))
+# model.add(Dense(1, activation='sigmoid'))
 model.summary()
 
 """
@@ -105,8 +110,8 @@ model.compile(optimizer='rmsprop',
 loss='binary_crossentropy',
 metrics=['acc'])
 history = model.fit(x_train, y_train,
-epochs=10,
-batch_size=32,
+epochs=50,
+batch_size=128,
 validation_data=(x_val, y_val))
 model.save_weights('pre_trained_glove_model.h5') #save the model's knowledge
 
